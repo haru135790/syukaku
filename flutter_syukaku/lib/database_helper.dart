@@ -8,14 +8,17 @@ class DatabaseHelper {
   static final _databaseName = "companys.db"; // DB名
   static final _databaseVersion = 1;
 
-  static final table = 'my_table'; // テーブル名
+  static final table = 'main_table'; // テーブル名
   static final columnId = '_id'; // カラム名：ID
-  static final companyName = 'companyName';
-  static final jobName = 'jobName';
-  static final industry = 'industry';
-  static final companyDescription = 'companyDescription';
-  static final wantRank = 'wantRank';
-  static final statement = 'statement';
+  static final companyName = 'companyName'; // 会社名
+  static final jobName = 'jobName'; // 職種
+  static final industry = 'industry'; // 業界
+  static final companyDescription = 'companyDescription'; // 会社説明
+  static final wantRank = 'wantRank'; // 志望度
+  static final selectionStage = 'selectionStage'; // 選考ステージ
+  static final connection = 'connection'; // 連絡ツール、仲介サービス名など
+  static final connectionLink = 'connectionLink'; // 連絡ツール、仲介サービスのリンク
+  static final statement = 'statement'; // ステートメント
 
   // DatabaseHelper クラスを定義
   DatabaseHelper._privateConstructor();
@@ -50,7 +53,6 @@ class DatabaseHelper {
   // テーブル作成
   // 引数:dbの名前
   // 引数:スキーマーのversion
-  // スキーマーのバージョンはテーブル変更時にバージョンを上げる（テーブル・カラム追加・変更・削除など）
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $table (
@@ -60,21 +62,29 @@ class DatabaseHelper {
             $industry TEXT NOT NULL,
             $companyDescription TEXT NOT NULL,
             $wantRank INTEGER NOT NULL,
-            $statement TEXT NOT NULL
+            $connection TEXT,
+            $connectionLink TEXT,
+            $statement TEXT
           )
           ''');
   }
 
-  // 登録処理
+  // レコード追加
   Future<int> insert(Map<String, dynamic> row) async {
     Database? db = await instance.database;
     return await db!.insert(table, row);
   }
 
-  // 照会処理
+  // 全データ取得
   Future<List<Map<String, dynamic>>> queryAllRows() async {
     Database? db = await instance.database;
     return await db!.query(table);
+  }
+    
+  // idと会社名、職種と希望度のリストを取得
+  Future<List<Map<String, dynamic>>> queryCompanyList() async {
+    Database? db = await instance.database;
+    return await db!.query(table, columns: [columnId, companyName, industry, wantRank]);
   }
 
   // レコード数を確認
@@ -90,7 +100,7 @@ class DatabaseHelper {
     return await db!.update(table, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  //　削除処理
+  // 指定IDのレコード削除
    Future<int> delete(int id) async {
     Database? db = await instance.database;
     return await db!.delete(table, where: '$columnId = ?', whereArgs: [id]);
