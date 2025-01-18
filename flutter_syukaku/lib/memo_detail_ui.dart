@@ -1,20 +1,34 @@
+import 'package:flutter_syukaku/data_class.dart';
 import 'package:flutter/material.dart';
 
 class MemoDetail extends StatefulWidget {
-  const MemoDetail({Key? key}) : super(key: key);
+  MemoDetail(this.memo, {super.key});
+  final memodata memo;
   @override
-  _MemoDetailState createState() => _MemoDetailState();
+  // ignore: library_private_types_in_public_api, no_logic_in_create_state
+  _MemoDetailState createState() => _MemoDetailState(memo);
 }
 
+
+
 class _MemoDetailState extends State<MemoDetail> {
+  memodata memo;
+  _MemoDetailState(this.memo);
   @override
   Widget build(BuildContext context) {
+    bool editMode = false;
+    memodata editedtump = memo;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        leading: Icon(Icons.list),
+        leading: IconButton(
+          icon : const Icon(Icons.list),
+          onPressed: () {
+            // 画面遷移
+          },
+          ),
         centerTitle: true,
-        title: Text('会社名'),
+        title: Text(memo.companyName),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -38,32 +52,36 @@ class _MemoDetailState extends State<MemoDetail> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
+                    Container(//企業名
                       color: Colors.blueGrey,
                       height: 50,
                       width: 200.0,
                       padding: const EdgeInsets.all(0.0),
                       alignment: Alignment.center,
-                      child: Text(
-                        "会社名",
+                      child: TextField(
+                        enabled: editMode,
+                        controller: TextEditingController(text: memo.companyName),
                         style: TextStyle(
                           fontSize: 12.0,
                           color: const Color(0xFF000000),
                           fontWeight: FontWeight.w200,
                           fontFamily: "Roboto",
                         ),
+                        onChanged: (String value) {
+                          editedtump.companyName = value;
+                        },
                       ),
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    Container(
+                    Container(//職種
                       color: Colors.blueGrey,
                       height: 50,
                       padding: const EdgeInsets.all(0.0),
                       alignment: Alignment.center,
                       child: Text(
-                        "職種",
+                        memo.jobName,
                         style: TextStyle(
                           fontSize: 12.0,
                           color: const Color(0xFF000000),
@@ -84,7 +102,7 @@ class _MemoDetailState extends State<MemoDetail> {
                   color: Colors.cyanAccent,
                   alignment: Alignment.center,
                   child: Text(
-                    "業界名",
+                    memo.industry,
                   ),
                 ),
               ),
@@ -111,7 +129,7 @@ class _MemoDetailState extends State<MemoDetail> {
                   padding: const EdgeInsets.all(0.0),
                   alignment: Alignment.center,
                   child: Text(
-                    "志望度",
+                    memo.wantRank.toString(),
                     style: TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
@@ -132,7 +150,7 @@ class _MemoDetailState extends State<MemoDetail> {
                   padding: const EdgeInsets.all(0.0),
                   alignment: Alignment.center,
                   child: Text(
-                    "状態",
+                    memo.statement,
                     style: TextStyle(
                       fontSize: 12.0,
                       color: const Color(0xFF000000),
@@ -163,10 +181,27 @@ class _MemoDetailState extends State<MemoDetail> {
                   border: OutlineInputBorder(),
                   hintText: 'Enter your memo',
                 ),
+                onChanged: (String value) {
+                  memo.companyDescription = value;
+                },
               ),
             ),
           ),
         ],
+      ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        setState(() {
+                 //編集モードに切り替え　編集モードの場合は保存ボタンを表示
+        if (editMode) {
+          //保存処理
+        }else{
+          //編集モードに切り替え
+          editMode = true;
+        }
+        });
+ 
+      },
       ),
     );
   }
