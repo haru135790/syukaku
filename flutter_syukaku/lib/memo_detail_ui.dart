@@ -14,9 +14,12 @@ class MemoDetail extends StatefulWidget {
 class _MemoDetailState extends State<MemoDetail> {
   memodata memo;
   _MemoDetailState(this.memo);
+  bool editMode = false;
+  bool changedMemo = false;
+
   @override
   Widget build(BuildContext context) {
-    bool editMode = false;
+    
     memodata editedtump = memo;
     return Scaffold(
       appBar: AppBar(
@@ -61,6 +64,7 @@ class _MemoDetailState extends State<MemoDetail> {
                       child: TextField(
                         enabled: editMode,
                         controller: TextEditingController(text: memo.companyName),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12.0,
                           color: const Color(0xFF000000),
@@ -195,9 +199,15 @@ class _MemoDetailState extends State<MemoDetail> {
                  //編集モードに切り替え　編集モードの場合は保存ボタンを表示
         if (editMode) {
           //保存処理
+          if(memo!=editedtump){
+            memo = editedtump;
+            changedMemo = true;
+          }
+          editMode = false;
         }else{
           //編集モードに切り替え
           editMode = true;
+          
         }
         });
  
