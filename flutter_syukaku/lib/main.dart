@@ -1,52 +1,30 @@
+import 'package:flutter/rendering.dart';
+import 'package:flutter_syukaku/data_class.dart';
+import 'package:flutter_syukaku/memo_detail_ui.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-       home: MyHomePage(),
-    );
-  }
+void main() {
+  debugPaintSizeEnabled=false;
+  runApp(MyApp());
 }
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-class MyHomePage extends StatelessWidget {
-
-  // DatabaseHelper クラスのインスタンス取得
-  final dbHelper = DatabaseHelper.instance;
-
-  // homepage layout
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('SQLiteデモ'),
+memodata test=memodata(companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "テスト業界", wantRank: 1, statement: "テストステートメント");
+
+    return MaterialApp(
+      title: 'Generated App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFF2196f3),
+        //accentColor: const Color(0xFF2196f3),
+        canvasColor: const Color(0xFFfafafa),
       ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
-              child: Text('登録', style: TextStyle(fontSize: 35),),
-              onPressed: _insert,
-            ),
-            ElevatedButton(
-              child: Text('照会', style: TextStyle(fontSize: 35),),
-              onPressed: _query,
-            ),
-            ElevatedButton(
-              child: Text('更新', style: TextStyle(fontSize: 35),),
-              onPressed: _update,
-            ),
-            ElevatedButton(
-              child: Text('削除', style: TextStyle(fontSize: 35),),
-              onPressed: _delete,
-            ),
-          ],
-        ),
-      ),
+      home: MemoDetail(test),
+
     );
   }
 
