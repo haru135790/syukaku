@@ -8,4 +8,5 @@ class memodata{
 
   memodata({required this.companyName, required this.jobName, required this.industry, required this.wantRank, required this.statement});
 
+
 }
