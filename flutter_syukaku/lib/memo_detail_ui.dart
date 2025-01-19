@@ -1,4 +1,5 @@
 import 'package:flutter_syukaku/data_class.dart';
+import 'database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MemoDetail extends StatefulWidget {
@@ -13,6 +14,7 @@ class MemoDetail extends StatefulWidget {
 
 class _MemoDetailState extends State<MemoDetail> {
   memodata memo;
+  DatabaseHelper dbHelper = DatabaseHelper.instance;
   _MemoDetailState(this.memo);
   bool editMode = false;
   bool changedMemo = false;
@@ -49,6 +51,7 @@ class _MemoDetailState extends State<MemoDetail> {
             children: <Widget>[
               SizedBox(
                 width: 20.0,
+                height: 0.0,
               ),
               Expanded(
                 child: Column(
@@ -80,19 +83,24 @@ class _MemoDetailState extends State<MemoDetail> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Container(//職種
+                    Container(
                       color: Colors.blueGrey,
                       height: 50,
                       padding: const EdgeInsets.all(0.0),
                       alignment: Alignment.center,
-                      child: Text(
-                        memo.jobName,
+                      child: TextField(
+                        enabled: editMode,
+                        controller: TextEditingController(text: memo.jobName),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12.0,
                           color: const Color(0xFF000000),
                           fontWeight: FontWeight.w200,
                           fontFamily: "Roboto",
                         ),
+                        onChanged: (String value) {
+                          editedtump.jobName = value;
+                        },
                       ),
                     ),
                   ],
@@ -101,15 +109,34 @@ class _MemoDetailState extends State<MemoDetail> {
               SizedBox(
                 width: 20.0,
               ),
-              Expanded(
+              Expanded(//業界
                 child: Container(
                   height: 180,
                   color: Colors.cyanAccent,
                   alignment: Alignment.center,
-                  child: Text(
+                  child: editMode ? DropdownButton<String>(
+                    value:editedtump.industry,
+                    items: pulldownList.getIndustryList().map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        editedtump.industry = value!;
+                      });
+                    },
+                  ) : Text(
                     memo.industry,
-                  ),
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w200,
+                      fontFamily: "Roboto",
+                    ),
                 ),
+                )
               ),
               SizedBox(
                 width: 20.0,
@@ -133,7 +160,20 @@ class _MemoDetailState extends State<MemoDetail> {
                   color: Colors.blue,
                   padding: const EdgeInsets.all(0.0),
                   alignment: Alignment.center,
-                  child: Text(
+                  child: editMode ? DropdownButton<int>(
+                    value:editedtump.wantRank,
+                    items: pulldownList.getWantRankList().map((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text(value.toString()),
+                      );
+                    }).toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        editedtump.wantRank = value!;
+                      });
+                    },
+                  ) : Text(
                     memo.wantRank.toString(),
                     style: TextStyle(
                       fontSize: 12.0,
@@ -142,7 +182,7 @@ class _MemoDetailState extends State<MemoDetail> {
                       fontFamily: "Roboto",
                     ),
                   ),
-                ),
+                )
               ),
               SizedBox(
                 width: 10.0,
@@ -154,15 +194,20 @@ class _MemoDetailState extends State<MemoDetail> {
                   color: Colors.red,
                   padding: const EdgeInsets.all(0.0),
                   alignment: Alignment.center,
-                  child: Text(
-                    memo.statement,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
-                      fontFamily: "Roboto",
-                    ),
-                  ),
+                      child: TextField(
+                        enabled: editMode,
+                        controller: TextEditingController(text: memo.statement),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: const Color(0xFF000000),
+                          fontWeight: FontWeight.w200,
+                          fontFamily: "Roboto",
+                        ),
+                        onChanged: (String value) {
+                          editedtump.statement = value;
+                        },
+                      ),
                 ),
               ),
               SizedBox(
@@ -182,12 +227,14 @@ class _MemoDetailState extends State<MemoDetail> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 minLines: 8,
+                enabled: editMode,
+                controller: TextEditingController(text: editMode ? editedtump.companyDescription ?? "" : memo.companyDescription ?? ""),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter your memo',
                 ),
                 onChanged: (String value) {
-                  memo.companyDescription = value;
+                  editedtump.companyDescription = value;
                 },
               ),
             ),

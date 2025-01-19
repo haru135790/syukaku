@@ -1,21 +1,22 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_syukaku/data_class.dart';
+import 'package:flutter_syukaku/jpcome.dart';
 import 'package:flutter_syukaku/memo_detail_ui.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
 void main() {
   debugPaintSizeEnabled=false;
-  runApp(MyApp());
+  runApp(MApp());
 }
   DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MApp extends StatelessWidget {
+  const MApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-memodata test=memodata(companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "テスト業界", wantRank: 1, statement: "テストステートメント");
-    
+memodata test=memodata(id:20, companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "未設定", wantRank: 1, statement: "テストステートメント");
+    dbHelper.insert(test.toMap());
     return MaterialApp(
       title: 'Generated App',
       theme: ThemeData(
@@ -24,7 +25,7 @@ memodata test=memodata(companyName: "テストカンパニー", jobName: "テス
         //accentColor: const Color(0xFF2196f3),
         canvasColor: const Color(0xFFfafafa),
       ),
-      home: MemoDetail(test),
+      home: MyApp(),
 
     );
   }
