@@ -20,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<companydata> companylist = [];
 
   @override
-  void initState() async{
+  void initState() {
     _insert();
     _queryCompanyList();
     super.initState();
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _insert() async {
+  Future<void> _insert() async {
     // row to insert
     Map<String, dynamic> row = {
       DatabaseHelper.companyName : '株式会社テスト',
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('登録しました。id: $id');
   }
 
-  void _queryCompanyList() async {
+  Future<void> _queryCompanyList() async {
     final data = await dbHelper.queryCompanyList();
     print('必要なデータを照会しました。');
     data.forEach((row) {
