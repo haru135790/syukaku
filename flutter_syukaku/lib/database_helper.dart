@@ -87,6 +87,13 @@ class DatabaseHelper {
     return await db!.query(table, columns: [columnId, companyName, industry, wantRank]);
   }
 
+  // 指定IDのレコード取得
+  Future<Map<String, dynamic>> queryRow(int id) async {
+    Database? db = await instance.database;
+    List<Map<String, dynamic>> maps = await db!.query(table, where: '$columnId = ?', whereArgs: [id]);
+    return maps[0];
+  }
+
   // レコード数を確認
    Future<int?> queryRowCount() async {
     Database? db = await instance.database;
