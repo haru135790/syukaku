@@ -3,23 +3,29 @@ import 'database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MemoDetail extends StatefulWidget {
-  MemoDetail(this.memo, {super.key});
-  final memodata memo;
+  MemoDetail(this.id, {super.key});
+  final int id;
   @override
   // ignore: library_private_types_in_public_api, no_logic_in_create_state
-  _MemoDetailState createState() => _MemoDetailState(memo);
+  _MemoDetailState createState() => _MemoDetailState(id);
 }
 
 
-
 class _MemoDetailState extends State<MemoDetail> {
-  memodata memo;
-  DatabaseHelper dbHelper = DatabaseHelper.instance;
-  _MemoDetailState(this.memo);
+  int id;
+  Future<memodata>? memo;
+  final DatabaseHelper dbHelper = DatabaseHelper.instance;
+  _MemoDetailState(this.id) {
+    memo = memoset(id);
+  }
   bool editMode = false;
   bool changedMemo = false;
   ForPulldownList pulldownList = ForPulldownList();
-
+Future<memodata> memoset(int i) async {
+  Future<Map<String, dynamic>> te = dbHelper.queryRow(i);
+  memodata m = await memodata.fromMapAsync(te);
+  return m;
+}
   @override
   Widget build(BuildContext context) {
     
@@ -241,28 +247,68 @@ class _MemoDetailState extends State<MemoDetail> {
           ),
         ],
       ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: editMode ? Colors.greenAccent : Colors.deepPurpleAccent,
-      onPressed: () {
-        setState(() {
-                 //編集モードに切り替え　編集モードの場合は保存ボタンを表示
-        if (editMode) {
-          //保存処理
-          if(memo!=editedtump){
-            memo = editedtump;
-            changedMemo = true;
-          }
-          editMode = false;
-        }else{
-          //編集モードに切り替え
-          editMode = true;
-          
-        }
-        });
- 
-      },
-      child: Icon(editMode ? Icons.save : Icons.edit),
+ floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: editMode ? Colors.greenAccent : Colors.deepPurpleAccent,
+            onPressed: () {
+              setState(() {
+                // 編集モードに切り替え　編集モードの場合は保存ボタンを表示
+                if (editMode) {
+                  // 保存処理
+                  if (memo != editedtump) {
+                    memo = editedtump;
+                    changedMemo = true;
+                  }
+                  editMode = false;
+                } else {
+                  // 編集モードに切り替え
+                  editMode = true;
+                }
+              });
+            },
+            child: Icon(editMode ? Icons.save : Icons.edit),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            backgroundColor: Colors.redAccent,
+            onPressed: () {
+              // 削除処理
+              // ここに削除処理を追加
+              ttest();
+            },
+            child: Icon(Icons.delete),
+          ),
+        ],
       ),
     );
+  }
+  void ttest()async{
+        Map<String, dynamic> row = {
+      DatabaseHelper.companyName : '株式会社テスト',
+      DatabaseHelper.companyDescription  : 'テスト' ,
+      DatabaseHelper.jobName : 'エンジニア',
+      DatabaseHelper.industry : 'SIer',
+      DatabaseHelper.wantRank : 1,
+      DatabaseHelper.statement : 'テストデータ'
+    };
+  //memodata test=memodata( companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "未設定", wantRank: 1, statement: "テストステートメント");
+    final id = await dbHelper.insert(row);
+    Future<Map<String, dynamic>> te = dbHelper.queryRow(id);
+    memodata test = await memodata.fromMapAsync(te);
+    print(test.companyName);
+}
+
+
+void _insert() async {
+    // row to insert
+    Map<String, dynamic> row = {
+      ///DatabaseHelper.companyName : memodata.companyName,
+      //DatabaseHelper.companyDescription : memodata.companyDescription,
+      //中略
+    };
+    final id = await dbHelper.insert(row);
+    print('登録しました。id: $id');
   }
 }
