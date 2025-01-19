@@ -1,19 +1,22 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter_syukaku/data_class.dart';
+import 'package:flutter_syukaku/jpcome.dart';
 import 'package:flutter_syukaku/memo_detail_ui.dart';
+import 'package:flutter_syukaku/Companylist.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
 void main() {
   debugPaintSizeEnabled=false;
-  runApp(MyApp());
+  runApp(MApp());
 }
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  DatabaseHelper dbHelper = DatabaseHelper.instance;
 
+class MApp extends StatelessWidget {
+  const MApp({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
-memodata test=memodata(companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "テスト業界", wantRank: 1, statement: "テストステートメント");
 
     return MaterialApp(
       title: 'Generated App',
@@ -23,10 +26,11 @@ memodata test=memodata(companyName: "テストカンパニー", jobName: "テス
         //accentColor: const Color(0xFF2196f3),
         canvasColor: const Color(0xFFfafafa),
       ),
-      home: MemoDetail(test),
+      home: MemoDetail(memodata(companyName: '株式会社テスト', jobName: 'エンジニア', industry: 'SIer', wantRank: 1, statement: 'テストデータ')),
 
     );
   }
+
 
   // 登録ボタンクリック
   void _insert() async {
