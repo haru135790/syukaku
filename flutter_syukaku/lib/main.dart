@@ -8,13 +8,14 @@ void main() {
   debugPaintSizeEnabled=false;
   runApp(MyApp());
 }
+  DatabaseHelper dbHelper = DatabaseHelper.instance;
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
 memodata test=memodata(companyName: "テストカンパニー", jobName: "テストエンジニア", industry: "テスト業界", wantRank: 1, statement: "テストステートメント");
-
+    
     return MaterialApp(
       title: 'Generated App',
       theme: ThemeData(

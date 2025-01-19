@@ -16,6 +16,7 @@ class _MemoDetailState extends State<MemoDetail> {
   _MemoDetailState(this.memo);
   bool editMode = false;
   bool changedMemo = false;
+  ForPulldownList pulldownList = ForPulldownList();
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +195,7 @@ class _MemoDetailState extends State<MemoDetail> {
         ],
       ),
     floatingActionButton: FloatingActionButton(
+      backgroundColor: editMode ? Colors.greenAccent : Colors.deepPurpleAccent,
       onPressed: () {
         setState(() {
                  //編集モードに切り替え　編集モードの場合は保存ボタンを表示
@@ -212,6 +214,7 @@ class _MemoDetailState extends State<MemoDetail> {
         });
  
       },
+      child: Icon(editMode ? Icons.save : Icons.edit),
       ),
     );
   }
