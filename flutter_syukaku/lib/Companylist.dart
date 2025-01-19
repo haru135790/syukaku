@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
-import 'companydeteal.dart';
+import 'company_detail.dart';
 
 void main() => runApp(const MyHomePage( title: '就書'));
 
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => companydeteal(companylist[index].columnId)),
+                  MaterialPageRoute(builder: (context) => CompanyDetail(companylist[index].columnId)),
                 );
               },
             ),
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       DatabaseHelper.companyName : '株式会社テスト',
       DatabaseHelper.companyDescription  : 'テスト' ,
       DatabaseHelper.jobName : 'エンジニア',
-      DatabaseHelper.industry : 'SIer',
+      DatabaseHelper.industry : '未設定',
       DatabaseHelper.wantRank : 1,
       DatabaseHelper.statement : 'テストデータ'
     };
