@@ -4,7 +4,7 @@ import 'company_detail.dart';
 
 void main() => runApp(const MyHomePage( title: '就書'));
 
-typedef companydata = ({int columnId, String companyName, String industry, String wantRank});
+typedef companydata = ({int columnId, String companyName, String industry, int wantRank});
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
