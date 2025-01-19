@@ -6,27 +6,21 @@ import 'package:flutter_syukaku/Companylist.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 
-void main() {
-  debugPaintSizeEnabled=false;
-  runApp(MApp());
-}
+
   DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-class MApp extends StatelessWidget {
-  const MApp({Key? key}) : super(key: key);
-  
+class CompanyDetail extends StatelessWidget {
+  const CompanyDetail(this.id,{Key? key}) : super(key: key);
+  final int id;
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
       title: 'Generated App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: const Color(0xFF2196f3),
-        //accentColor: const Color(0xFF2196f3),
-        canvasColor: const Color(0xFFfafafa),
+
       ),
-      home: MemoDetail(memodata(companyName: '株式会社テスト', jobName: 'エンジニア', industry: 'SIer', wantRank: 1, statement: 'テストデータ')),
+      home: MemoDetail(id),
 
     );
   }

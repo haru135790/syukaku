@@ -13,7 +13,7 @@ class MemoDetail extends StatefulWidget {
 
 class _MemoDetailState extends State<MemoDetail> {
   int id;
-  Future<memodata>? memo;
+  late memodata memo;
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
   _MemoDetailState(this.id) {
     memo = memoset(id);
@@ -21,10 +21,12 @@ class _MemoDetailState extends State<MemoDetail> {
   bool editMode = false;
   bool changedMemo = false;
   ForPulldownList pulldownList = ForPulldownList();
-Future<memodata> memoset(int i) async {
+ memoset(int i) async {
   Future<Map<String, dynamic>> te = dbHelper.queryRow(i);
   memodata m = await memodata.fromMapAsync(te);
   return m;
+}
+dataUpdate(memodata m) async {
 }
   @override
   Widget build(BuildContext context) {
