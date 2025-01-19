@@ -16,20 +16,52 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+// https://zenn.dev/ryo_t/articles/779e5026184695 画面遷移バグ
+  @override
+  Widget build(BuildContext context) { /*3*/
+    return MaterialApp(  /*4*/
+      home: Companylist(),
+    );
+  }
+/*
+  Future<void> _insert() async {
+    // row to insert
+    Map<String, dynamic> row = {
+      DatabaseHelper.companyName : '株式会社テスト',
+      DatabaseHelper.companyDescription  : 'テスト' ,
+      DatabaseHelper.jobName : 'エンジニア',
+      DatabaseHelper.industry : '未設定',
+      DatabaseHelper.wantRank : 1,
+      DatabaseHelper.statement : 'テストデータ'
+    };
+    final id = await dbHelper.insert(row);
+    print('登録しました。id: $id');
+  }
+
+  Future<void> _queryCompanyList() async {
+    final data = await dbHelper.queryCompanyList();
+    print('必要なデータを照会しました。');
+    data.forEach((row) {
+      companylist.add((
+        columnId: row[DatabaseHelper.columnId],
+        companyName: row[DatabaseHelper.companyName],
+        industry: row[DatabaseHelper.industry],
+        wantRank: row[DatabaseHelper.wantRank],
+      ));
+    });
+  }
+  */
+}
+
+class Companylist extends StatelessWidget{
+  Companylist({Key? key}) : super(key: key);
   final dbHelper = DatabaseHelper.instance;
   List<companydata> companylist = [];
 
   @override
-  void initState() {
-    _insert();
-    _queryCompanyList();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) { /*3*/
-    return MaterialApp(  /*4*/
-      home: Scaffold( /*5*/
+  Widget build(BuildContext context) {
+    return Scaffold( /*5*/
         appBar:AppBar(
           title: Text('就書'),
         ),
@@ -94,11 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
       ),
-      ),
     );
   }
 
-  Future<void> _insert() async {
+   Future<void> _insert() async {
     // row to insert
     Map<String, dynamic> row = {
       DatabaseHelper.companyName : '株式会社テスト',

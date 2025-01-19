@@ -15,6 +15,7 @@ class _MemoDetailState extends State<MemoDetail> {
   int id;
   late memodata memo;
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
+  // https://qiita.com/kazutxt/items/eadfbcd79dab07103b83  https://flutter.salon/dart/optimisation-asynchronous-processing/
   _MemoDetailState(this.id) {
     memo = memoset(id);
   }
